@@ -1,0 +1,4 @@
+/vagrant/demo-project/src/main/java/de/gedoplan/demo/Person.java
+/vagrant/demo-project/src/main/java/de/gedoplan/demo/PersonenService.java
+/vagrant/demo-project/src/main/java/de/gedoplan/demo/PersonenResource.java
+/vagrant/demo-project/src/main/java/de/gedoplan/demo/JAXRSConfiguration.java
