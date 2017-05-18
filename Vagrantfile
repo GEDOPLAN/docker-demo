@@ -34,15 +34,13 @@ export PATH=$PATH:"$JAVA_HOME"/bin:"$M2_HOME"/bin
 EOF
 
 apt-get update
-apt-get install -y apt-transport-https ca-certificates
-apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 
-cat <<EOF >> /etc/apt/sources.list.d/docker.list
-deb https://apt.dockerproject.org/repo debian-jessie main
-EOF
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
 
 apt-get update
-apt-get install -y docker-engine
+apt-get install -y docker-ce
 service docker start
 
 groupadd docker
@@ -80,6 +78,9 @@ pip install docker-compose
 cd /vagrant/demo-project
 docker-compose up -d
 
+cd /vagrant/traefik
+docker-compose up -d
+
 cd $HOME
 curl -s -S -O -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/"$JAVA_VERSION_MAJOR"u"$JAVA_VERSION_MINOR"-b"$JAVA_VERSION_BUILD"/jdk-"$JAVA_VERSION_MAJOR"u"$JAVA_VERSION_MINOR"-linux-x64.tar.gz
  tar xf jdk-"$JAVA_VERSION_MAJOR"u"$JAVA_VERSION_MINOR"-linux-x64.tar.gz
@@ -103,7 +104,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
 
   config.vm.box = "debian/jessie64"
-  config.vm.box_version = "= 8.4.0"
+  config.vm.box_version = "= 8.7.0"
 
   config.vm.network "private_network", ip: "172.28.128.4"
 

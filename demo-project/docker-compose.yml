@@ -4,8 +4,6 @@ services:
     image: localhost:5000/mysql
     volumes:
       - "/data/mysql:/var/data/mysql"
-    ports:
-      - "3306:3306"
     restart: always
     expose:
       - "3306"
@@ -15,14 +13,16 @@ services:
       - mysqldb
     build: .
     image: localhost:5000/demo
-    links:
-      - mysqldb
-    ports:
-      - "8080:8080"
-      - "9990:9990"
     restart: always
     environment:
       DB_CONNECTION_URL: mysqldb:3306
       DB_SCHEMA: demo
       DB_USER: demouser
       DB_PASSWORD: demopassword
+    labels:
+       - "traefik.backend=demoapp"
+       - "traefik.frontend.rule=Host:demoapp.docker.localhost"
+networks:
+  default:
+    external:
+      name: traefik_webgateway
